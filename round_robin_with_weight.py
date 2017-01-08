@@ -17,12 +17,14 @@ class RoundRobin(object):
 
     def get_best_weight(self, best_server):
         total = 0
+        best_name = ''
         for name, value in self.server.iteritems():
             value['curr_weight'] += value['weight']
             total += value['curr_weight']
             if value['curr_weight'] > best_server['curr_weight']:
-                best_server = {'name': name, 'curr_weight': value['curr_weight']}
+                best_server = {name: {'curr_weight': value['curr_weight']}}
+                best_name = name
 
-        value['curr_weight'] -= total
+        self.server[best_name]['curr_weight'] -= total
         return best_server
 
