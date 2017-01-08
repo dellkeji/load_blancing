@@ -6,6 +6,17 @@ algorithm description:
 on each peer selection we increase current_weight of each eligible peer by its weight,
 select peer with greatest current_weight and reduce its current_weight by total number of weight points distributed
 among peers.
+
+init data (4, 2, 1)
+
+before     select item      after
+(4, 2, 1)  a                (-3, 2, 1)
+(1, 4, 1)  b                (1, -3, 1)
+(5, -1, 3) a                (-2, -1, 3)
+(2, 1, 4)  c                (2, 1, -3)
+(6, 3, -2) a                (-1, 3, -2)
+(3, 5, -1) b                (3, -2, -1)
+(7, 0, 0)  a                (0, 0, 0)
 """
 __author__ = "bellkeyang"
 
