@@ -11,7 +11,7 @@ init data (4, 2, 1)
 
 before     select item      after
 (4, 2, 1)  a                (-3, 2, 1)
-(1, 4, 1)  b                (1, -3, 1)
+(1, 4, 2)  b                (1, -3, 1)
 (5, -1, 3) a                (-2, -1, 3)
 (2, 1, 4)  c                (2, 1, -3)
 (6, 3, -2) a                (-1, 3, -2)
@@ -21,21 +21,24 @@ before     select item      after
 __author__ = "bellkeyang"
 
 
+SERVER_WEIGHT = {'a': 4, 'b': 2, 'c': 1}
+
+
 class RoundRobin(object):
 
     def __init__(self, server):
-        self.server = server
+        self.total = sum(SERVER_WEIGHT.values())
 
-    def get_best_weight(self, best_server):
-        total = 0
-        best_name = ''
-        for name, value in self.server.iteritems():
-            value['curr_weight'] += value['weight']
-            total += value['curr_weight']
-            if value['curr_weight'] > best_server['curr_weight']:
-                best_server = {name: {'curr_weight': value['curr_weight']}}
-                best_name = name
+    def get_best_server(self, pre_server_weight=SERVER_WEIGHT):
+        # 根据当前权重获取最佳
+        sorted_server_weight = sorted(
+            pre_server_weight.iteritems, key=lambda x: x[1], reverse=True
+        )
 
-        self.server[best_name]['curr_weight'] -= total
-        return best_server
+        # 得当当前的权重
+        for key, val in SERVER_WEIGHT.iteritems():
+            SERVER_WEIGHT[key] = val - self.total
+
+        # 返回
+        return sorted_server_weight[0][0]
 
